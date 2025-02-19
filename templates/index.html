@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Customer Churn Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="/static/style.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row mt-4">
+        <p>Customer Classification Model v1.0</p>
+        <h1>Unleash the Power of AI. Smarter, Faster, Better</h1>
+        <small>Transform your business with cutting-edge AI. Automate tasks, enhance decision-making, and unlock new possibilities with our intelligent, adaptive model.</small>
+      </div>
+      <div class="row stage">
+        <div class="col-md-4">
+          <form id="prediction-form" action="/predict" method="post" class="row g-3">
+            <div class="col-md-6">
+              <label for="contract" class="form-label">Contract:</label>
+              <select id="contract" name="contract" class="form-select">
+                <option value="Month-to-month">Month-to-month</option>
+                <option value="One year">One year</option>
+                <option value="Two year">Two year</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="onlinesecurity" class="form-label">Online Security:</label>
+              <select id="onlinesecurity" name="onlinesecurity" class="form-select">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="techsupport" class="form-label">Tech Support:</label>
+              <select id="techsupport" name="techsupport" class="form-select">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="internetservice" class="form-label">Internet Service:</label>
+              <select id="internetservice" name="internetservice" class="form-select">
+                <option value="DSL">DSL</option>
+                <option value="Fiber optic">Fiber optic</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="onlinebackup" class="form-label">Online Backup:</label>
+              <select id="onlinebackup" name="onlinebackup" class="form-select">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="tenure" class="form-label">Tenure:</label>
+              <input type="number" id="tenure" name="tenure" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label for="monthlycharges" class="form-label">Monthly Charges:</label>
+              <input type="number" id="monthlycharges" name="monthlycharges" class="form-control" step="0.01" required>
+            </div>
+            <div class="col-md-6">
+              <label for="totalcharges" class="form-label">Total Charges:</label>
+              <input type="number" id="totalcharges" name="totalcharges" class="form-control" step="10" required>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="">Predict Churn Futuristically</button>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-8">
+       <div class="show">
+        <h5 class="text-center mb-4">Customer Churn Prediction</h5>
+        <div id="preloader" class="text-center" style="display:none;">Loading...</div>
+  
+        <div class="chart">
+          <div id="result" class="mt-4"></div>
+        </div>
+       </div>
+        </div>
+      </div>
+    </div>
+ 
+    <script>
+        $(document).ready(function() {
+            $('#prediction-form').on('submit', function(event) {
+                event.preventDefault();
+                $('#preloader').show();
+                $('#result').hide();
+                $.ajax({
+                    url: '/predict',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#preloader').hide();
+                        $('#result').html('<strong>Prediction:</strong><p>' + response.prediction + '</p><small>Probability: </small><h4>' + response.probability + '</h4>').show();
+                    },
+                    error: function(xhr) {
+                        $('#preloader').hide();
+                        $('#result').html('<p>Error: ' + xhr.responseJSON.error + '</p>').show();
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
